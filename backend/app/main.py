@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 app = FastAPI(
-    title="Japan Fertility Work style Analysis API",
+    title="Japan Fertility Workstyle Analysis API",
 )
 
 @app.get("/health")
