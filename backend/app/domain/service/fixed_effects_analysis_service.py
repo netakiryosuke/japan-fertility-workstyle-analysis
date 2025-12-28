@@ -1,4 +1,4 @@
-class fixed_effects_analysis_service:
+class FixedEffectsAnalysisService:
     def __init__(
             self,
             dependent_var: str,
