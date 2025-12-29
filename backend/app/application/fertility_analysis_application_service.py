@@ -1,3 +1,6 @@
+from backend.app.domain.model.fixed_effects_result import FixedEffectsResult
+
+
 class FertilityAnalysisApplicationService:
     def __init__(self):
         self.csv_loader = CsvDataFrameLoader()
@@ -9,8 +12,8 @@ class FertilityAnalysisApplicationService:
         independent_vars: list[str],
         entity_var: str = "prefecture",
         time_var: str = "year"
-    ):
-        df = csv_loader.load(csv_bytes)
+    ) -> FixedEffectsResult:
+        dataframe = csv_loader.load(csv_bytes)
 
         analysis_service = FixedEffectsAnalysisService(
             dependent_var=dependent_var,
@@ -19,4 +22,4 @@ class FertilityAnalysisApplicationService:
             time_var=time_var
         )
 
-        return analysis_service.analyze(df)
+        return analysis_service.analyze(dataframe)
