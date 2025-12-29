@@ -13,6 +13,7 @@ class FertilityAnalysisApplicationService:
         entity_var: str = "prefecture",
         time_var: str = "year"
     ) -> FixedEffectsResult:
+
         dataframe = csv_loader.load(csv_bytes)
 
         analysis_service = FixedEffectsAnalysisService(
