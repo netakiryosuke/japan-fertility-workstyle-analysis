@@ -1,4 +1,4 @@
-<!-- I want to review in Japanese. -->
+<!-- Copilotのレビューは日本語にしてください。 -->
 Motivation
 ----------------------------------------
 
@@ -16,4 +16,4 @@ Rejected alternatives
 
 ### B.
 
-<!-- I want to review in Japanese. -->
+<!-- Copilotのレビューは日本語にしてください。 -->
