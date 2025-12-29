@@ -1,4 +1,5 @@
 from backend.app.domain.model.fixed_effects_result import FixedEffectsResult
+from backend.app.domain.service.fixed_effects_analysis_service import FixedEffectsAnalysisService
 from backend.app.infrastructure.csv_dataframe_loader import CsvDataFrameLoader
 
 
