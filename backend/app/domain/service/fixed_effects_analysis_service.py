@@ -1,5 +1,8 @@
 from linearmodels.panel import PanelOLS
 
+from backend.app.domain.model.fixed_effects_result import FixedEffectsResult
+
+
 class FixedEffectsAnalysisService:
     def __init__(
             self,
@@ -13,7 +16,7 @@ class FixedEffectsAnalysisService:
         self.entity_var = entity_var
         self.time_var = time_var
 
-    def analyze(self, dataframe) -> dict:
+    def analyze(self, dataframe) -> FixedEffectsResult:
         df = dataframe.set_index([self.entity_var, self.time_var])
 
         y = df[self.dependent_var]
@@ -23,15 +26,13 @@ class FixedEffectsAnalysisService:
 
         result = fixed_effects_model.fit()
 
-        return {
-            "nobs": int(result.nobs),
-            "params": result.params.to_dict(),
-            "std_errors": result.std_errors.to_dict(),
-            "tstats": result.tstats.to_dict(),
-            "pvalues": result.pvalues.to_dict(),
-            "rsquared": {
-                "within": result.rsquared_within,
-                "between": result.rsquared_between,
-                "overall": result.rsquared_overall,
-            }
-        }
+        return FixedEffectsResult(
+            nobs=int(result.nobs),
+            params=result.params.to_dict(),
+            std_errors=result.std_errors.to_dict(),
+            tstats=result.tstats.to_dict(),
+            pvalues=result.pvalues.to_dict(),
+            rsquared_within=result.rsquared_within,
+            rsquared_between=result.rsquared_between,
+            rsquared_overall=result.rsquared_overall
+        )
