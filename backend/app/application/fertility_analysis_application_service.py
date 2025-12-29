@@ -19,5 +19,4 @@ class FertilityAnalysisApplicationService:
             time_var=time_var
         )
 
-        result = analysis_service.analyze(df)
-        return result
+        return analysis_service.analyze(df)
