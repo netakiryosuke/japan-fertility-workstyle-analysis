@@ -4,8 +4,8 @@ from backend.app.infrastructure.csv_dataframe_loader import CsvDataFrameLoader
 
 
 class FertilityAnalysisApplicationService:
-    def __init__(self):
-        self.csv_loader = CsvDataFrameLoader()
+    def __init__(self, csv_loader):
+        self.csv_loader = csv_loader or CsvDataFrameLoader()
 
     def analyze(
         self,
