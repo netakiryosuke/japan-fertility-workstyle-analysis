@@ -1,6 +1,5 @@
-from fastapi import Request
+from fastapi import Request, status
 from fastapi.responses import JSONResponse
-from fastapi import status
 
 def handle_value_error(request: Request, e: ValueError):
     return JSONResponse(

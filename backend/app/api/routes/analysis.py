@@ -1,3 +1,4 @@
+from backend.app.application.fertility_analysis_application_service import FertilityAnalysisApplicationService
 from fastapi import APIRouter, UploadFile, File, Form
 
 router = APIRouter()
