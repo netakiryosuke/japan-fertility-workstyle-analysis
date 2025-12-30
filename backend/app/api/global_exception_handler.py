@@ -21,7 +21,7 @@ def handle_unexpected_exception(request: Request, e: Exception):
             "type": "about:blank",
             "title": "Internal server error",
             "status": status.HTTP_500_INTERNAL_SERVER_ERROR,
-            "detail": str(e),
+            "detail": "Unexpected error",
             "instance": str(request.url.path),
         },
     )
