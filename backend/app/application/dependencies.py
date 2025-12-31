@@ -1,4 +1,5 @@
 from fastapi import Depends
+
 from backend.app.application.fertility_analysis_application_service import FertilityAnalysisApplicationService
 from backend.app.infrastructure.dependencies import get_csv_dataframe_loader
 
