@@ -1,3 +1,5 @@
+import pandas as pd
+
 from backend.app.domain.model.fixed_effects_result import FixedEffectsResult
 from backend.app.domain.service.fixed_effects_analysis_service import FixedEffectsAnalysisService
 from backend.app.infrastructure.csv_dataframe_loader import CsvDataFrameLoader
@@ -26,3 +28,18 @@ class FertilityAnalysisApplicationService:
         )
 
         return analysis_service.analyze(dataframe)
+
+    def _normalize_dataframe(
+        self,
+        dataframe: pd.DataFrame,
+        dependent_var: str,
+        independent_vars: list[str]
+    ) -> pd.DataFrame:
+        
+        required_columns = [dependent_var] + independent_vars
+        missing_columns = set(required_columns) - set(dataframe.columns)
+        
+        if missing_columns:
+            pass
+        
+        return dataframe[required_columns]
