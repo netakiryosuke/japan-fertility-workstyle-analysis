@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 
-from backend.app.api.global_exception_handler import handle_missing_columns_exception, handle_value_error, handle_unexpected_exception
-from backend.app.api.main import api_router
-from backend.app.application.exception.missing_columns_exception import MissingColumnsException
+from app.api.global_exception_handler import handle_missing_columns_exception, handle_value_error, handle_unexpected_exception
+from app.api.main import api_router
+from app.application.exception.missing_columns_exception import MissingColumnsException
 
 app = FastAPI(
     title="Japan Fertility Workstyle Analysis API",
