@@ -1,4 +1,5 @@
 from linearmodels.panel import PanelOLS
+import pandas as pd
 
 from backend.app.domain.model.fixed_effects_result import FixedEffectsResult
 
@@ -16,7 +17,7 @@ class FixedEffectsAnalysisService:
         self.entity_var = entity_var
         self.time_var = time_var
 
-    def analyze(self, dataframe) -> FixedEffectsResult:
+    def analyze(self, dataframe: pd.DataFrame) -> FixedEffectsResult:
         df = dataframe.set_index([self.entity_var, self.time_var])
 
         y = df[self.dependent_var]
