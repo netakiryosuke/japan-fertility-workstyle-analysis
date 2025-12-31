@@ -1,7 +1,7 @@
 from fastapi import Request, status
 from fastapi.responses import JSONResponse
 
-from backend.app.application.exception.missing_columns_exception import MissingColumnsException
+from app.application.exception.missing_columns_exception import MissingColumnsException
 
 def handle_value_error(request: Request, e: ValueError):
     return JSONResponse(

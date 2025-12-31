@@ -1,7 +1,7 @@
 from linearmodels.panel import PanelOLS
 import pandas as pd
 
-from backend.app.domain.model.fixed_effects_result import FixedEffectsResult
+from app.domain.model.fixed_effects_result import FixedEffectsResult
 
 
 class FixedEffectsAnalysisService:
