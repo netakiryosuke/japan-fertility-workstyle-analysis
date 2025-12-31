@@ -1,7 +1,7 @@
 [project]
-name = "backend"
+name = "app"
 version = "0.1.0"
-description = "Add your description here"
+description = "An analytical tool to evaluate the impact of workstyle reforms on fertility rates in Japan using prefecture-level panel data"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
