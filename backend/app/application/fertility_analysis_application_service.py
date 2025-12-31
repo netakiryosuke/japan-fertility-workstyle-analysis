@@ -23,7 +23,9 @@ class FertilityAnalysisApplicationService:
         dataframe = self._normalize_dataframe(
             dataframe,
             dependent_var,
-            independent_vars
+            independent_vars,
+            entity_var,
+            time_var
         )
 
         analysis_service = FixedEffectsAnalysisService(
@@ -39,10 +41,12 @@ class FertilityAnalysisApplicationService:
         self,
         dataframe: pd.DataFrame,
         dependent_var: str,
-        independent_vars: list[str]
+        independent_vars: list[str],
+        entity_var: str,
+        time_var: str
     ) -> pd.DataFrame:
         
-        required_columns = [dependent_var] + independent_vars
+        required_columns = [dependent_var] + independent_vars + [entity_var, time_var]
         missing_columns = set(required_columns) - set(dataframe.columns)
         
         if missing_columns:
