@@ -20,6 +20,11 @@ class FertilityAnalysisApplicationService:
     ) -> FixedEffectsResult:
 
         dataframe = self.csv_loader.load(csv_bytes)
+        dataframe = self._normalize_dataframe(
+            dataframe,
+            dependent_var,
+            independent_vars
+        )
 
         analysis_service = FixedEffectsAnalysisService(
             dependent_var=dependent_var,
