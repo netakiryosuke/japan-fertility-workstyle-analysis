@@ -11,7 +11,7 @@ async def analyze(
         dependent_var: str = Form(...),
         independent_vars: list[str] = Form(...),
         fertility_analysis_application_service: FertilityAnalysisApplicationService = Depends(get_fertility_analysis_application_service)
-):
+) -> FixedEffectsResult:
     csv_bytes = await csv_file.read()
 
     return fertility_analysis_application_service.analyze(
