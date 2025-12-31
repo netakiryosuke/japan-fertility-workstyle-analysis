@@ -1,5 +1,6 @@
 import pandas as pd
 
+from backend.app.application.exception import MissingColumnsException
 from backend.app.domain.model.fixed_effects_result import FixedEffectsResult
 from backend.app.domain.service.fixed_effects_analysis_service import FixedEffectsAnalysisService
 from backend.app.infrastructure.csv_dataframe_loader import CsvDataFrameLoader
@@ -40,6 +41,6 @@ class FertilityAnalysisApplicationService:
         missing_columns = set(required_columns) - set(dataframe.columns)
         
         if missing_columns:
-            pass
-        
+            raise MissingColumnsException(list(missing_columns))
+                
         return dataframe[required_columns]
