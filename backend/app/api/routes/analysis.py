@@ -1,11 +1,9 @@
 from backend.app.application.fertility_analysis_application_service import FertilityAnalysisApplicationService
 from backend.app.domain.model.fixed_effects_result import FixedEffectsResult
-from fastapi import APIRouter, UploadFile, File, Form
+from fastapi import APIRouter, UploadFile, File, Form, Depends
+from backend.app.application.dependencies import get_fertility_analysis_application_service
 
 router = APIRouter(prefix="/analysis", tags=["analysis"])
-
-def get_fertility_analysis_application_service() -> FertilityAnalysisApplicationService:
-    return FertilityAnalysisApplicationService(csv_loader=None)
 
 @router.post("", response_model=FixedEffectsResult)
 async def analyze(
