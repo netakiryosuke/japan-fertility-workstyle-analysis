@@ -1,3 +1,6 @@
+import pandas as pd
+
+from backend.app.application.exception.missing_columns_exception import MissingColumnsException
 from backend.app.domain.model.fixed_effects_result import FixedEffectsResult
 from backend.app.domain.service.fixed_effects_analysis_service import FixedEffectsAnalysisService
 from backend.app.infrastructure.csv_dataframe_loader import CsvDataFrameLoader
@@ -17,6 +20,13 @@ class FertilityAnalysisApplicationService:
     ) -> FixedEffectsResult:
 
         dataframe = self.csv_loader.load(csv_bytes)
+        dataframe = self._normalize_dataframe(
+            dataframe,
+            dependent_var,
+            independent_vars,
+            entity_var,
+            time_var
+        )
 
         analysis_service = FixedEffectsAnalysisService(
             dependent_var=dependent_var,
@@ -26,3 +36,20 @@ class FertilityAnalysisApplicationService:
         )
 
         return analysis_service.analyze(dataframe)
+
+    def _normalize_dataframe(
+        self,
+        dataframe: pd.DataFrame,
+        dependent_var: str,
+        independent_vars: list[str],
+        entity_var: str,
+        time_var: str
+    ) -> pd.DataFrame:
+        
+        required_columns = [dependent_var] + independent_vars + [entity_var, time_var]
+        missing_columns = set(required_columns) - set(dataframe.columns)
+        
+        if missing_columns:
+            raise MissingColumnsException(list(missing_columns))
+                
+        return dataframe[required_columns]
