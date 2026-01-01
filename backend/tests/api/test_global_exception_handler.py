@@ -51,7 +51,7 @@ class TestHandleMissingColumnsException:
         response = handle_missing_columns_exception(mock_request, error)
         
         # Then
-        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_CONTENT
         assert response.body is not None
         
     def test_response_contains_missing_columns(self):
