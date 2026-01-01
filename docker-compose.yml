@@ -1,4 +1,11 @@
 services:
+  frontend:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend/dist:/usr/share/nginx/html
+
   backend:
     build: ./backend/
     ports:
