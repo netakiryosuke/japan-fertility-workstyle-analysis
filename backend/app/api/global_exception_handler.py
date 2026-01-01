@@ -17,11 +17,11 @@ def handle_value_error(request: Request, e: ValueError):
     
 def handle_missing_columns_exception(request: Request, e: MissingColumnsException):
     return JSONResponse(
-        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
         content={
             "type": "about:blank",
-            "title": "Unprocessable entity",
-            "status": status.HTTP_422_UNPROCESSABLE_ENTITY,
+            "title": "Unprocessable content",
+            "status": status.HTTP_422_UNPROCESSABLE_CONTENT,
             "detail": str(e),
             "instance": str(request.url.path),
         },
