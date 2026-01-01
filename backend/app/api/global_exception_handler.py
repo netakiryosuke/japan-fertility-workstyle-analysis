@@ -20,7 +20,7 @@ def handle_missing_columns_exception(request: Request, e: MissingColumnsExceptio
         status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
         content={
             "type": "about:blank",
-            "title": "Unprocessable entity",
+            "title": "Unprocessable content",
             "status": status.HTTP_422_UNPROCESSABLE_CONTENT,
             "detail": str(e),
             "instance": str(request.url.path),
