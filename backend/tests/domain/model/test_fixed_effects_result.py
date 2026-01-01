@@ -1,3 +1,5 @@
+import pytest
+
 from app.domain.model.fixed_effects_result import FixedEffectsResult
 
 
@@ -45,8 +47,6 @@ class TestFixedEffectsResult:
         )
         
         # When / Then
-        try:
+        import dataclasses
+        with pytest.raises((AttributeError, dataclasses.FrozenInstanceError)):
             result.nobs = 200
-            assert False, "Should not be able to modify frozen dataclass"
-        except AttributeError:
-            pass  # Expected behavior for frozen dataclass
