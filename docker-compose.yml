@@ -10,3 +10,5 @@ services:
     build: ./backend/
     ports:
       - "8000:8000"
+    environment:
+      - BACKEND_CORS_ORIGINS=http://localhost
