@@ -30,8 +30,8 @@ export function useAnalysis() {
         csvFile,
         dependentVar,
         independentVars: independentVars
-          .filter((v) => v.selected)
-          .map((v) => v.name),
+          .filter((independentVar) => independentVar.selected)
+          .map((independentVar) => independentVar.name),
       });
 
       setResult(response);
