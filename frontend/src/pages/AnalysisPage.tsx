@@ -2,13 +2,14 @@ import { useState } from "react";
 import type { FixedEffectsResult } from "../types/fixedEffectsResult";
 import analyzeFertility from "../api/analysis";
 
-export default function AnalysisPage() {
-    const [csvFile, setCsvFile] = useState<File | null>(null);
-    const [dependentVar, setDependentVar] = useState<string>("");
-    type IndependentVar = {
+type IndependentVar = {
         name: string
         selected: boolean
     };
+
+export default function AnalysisPage() {
+    const [csvFile, setCsvFile] = useState<File | null>(null);
+    const [dependentVar, setDependentVar] = useState<string>("");
     const [independentVars, setIndependentVars] = useState<IndependentVar[]>([])
     const [result, setResult] = useState<FixedEffectsResult | null>(null);
     const [loading, setLoading] = useState(false);
