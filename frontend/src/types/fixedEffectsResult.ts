@@ -1,4 +1,4 @@
-export type FixedEffectsResult = {
+export interface FixedEffectsResult {
   nobs: number
   params: Record<string, number>
   std_errors: Record<string, number>
