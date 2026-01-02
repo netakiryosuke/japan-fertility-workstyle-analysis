@@ -5,6 +5,11 @@ import analyzeFertility from "../api/analysis";
 export default function AnalysisPage() {
     const [csvFile, setCsvFile] = useState<File | null>(null);
     const [dependentVar, setDependentVar] = useState<string>("");
+    type IndependentVar = {
+        name: string
+        selected: boolean
+    };
+    const [independentVars, setIndependentVars] = useState<IndependentVar[]>([])
     const [result, setResult] = useState<FixedEffectsResult | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -19,7 +24,9 @@ export default function AnalysisPage() {
             const response = await analyzeFertility({
                 csvFile,
                 dependentVar: dependentVar,
-                independentVars: ["work_hours", "childcare_support_index"],
+                independentVars: independentVars
+                    .filter(v => v.selected)
+                    .map(v => v.name),
             });
 
             setResult(response);
