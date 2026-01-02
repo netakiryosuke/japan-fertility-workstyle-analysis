@@ -3,14 +3,16 @@ import type { FixedEffectsResult } from "../types/fixedEffectsResult";
 import analyzeFertility from "../api/analysis";
 
 type IndependentVar = {
-        name: string
-        selected: boolean
-    };
+    name: string
+    selected: boolean
+};
 
 export default function AnalysisPage() {
     const [csvFile, setCsvFile] = useState<File | null>(null);
     const [dependentVar, setDependentVar] = useState<string>("");
-    const [independentVars, setIndependentVars] = useState<IndependentVar[]>([])
+    const [independentVars, setIndependentVars] = useState<IndependentVar[]>([
+        { name: "", selected: false },
+    ])
     const [result, setResult] = useState<FixedEffectsResult | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -52,6 +54,48 @@ export default function AnalysisPage() {
                 onChange={e => setDependentVar(e.target.value)}
                 className="border px-2 py-1"
             />
+            {independentVars.map((value, index) => (
+                <div key={index} className="flex items-center gap-2">
+                    <input
+                        type="checkbox"
+                        checked={value.selected}
+                        onChange={() =>
+                            setIndependentVars(prev =>
+                                prev.map((independentVar, i) =>
+                                    i === index
+                                        ? { ...independentVar, selected: !independentVar.selected }
+                                        : independentVar
+                                )
+                            )
+                        }
+                    />
+                    <input
+                        type="text"
+                        value={value.name}
+                        onChange={e =>
+                            setIndependentVars(prev =>
+                                prev.map((independentVar, i) =>
+                                    i === index
+                                        ? { ...independentVar, name: e.target.value }
+                                        : independentVar
+                                )
+                            )
+                        }
+                        className="border px-2 py-1"
+                    />
+                </div>
+            ))}
+            <button
+                onClick={() =>
+                    setIndependentVars(prev => [
+                        ...prev,
+                        { name: "", selected: false },
+                    ])
+                }
+                className="px-2 py-1 border rounded"
+            >
+                ＋
+            </button>
             <button
                 onClick={handleAnalyze}
                 className="px-4 py-2 bg-blue-600 text-white rounded"
