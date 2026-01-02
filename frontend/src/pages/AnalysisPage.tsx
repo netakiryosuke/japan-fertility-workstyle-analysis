@@ -5,16 +5,29 @@ import analyzeFertility from "../api/analysis";
 export default function AnalysisPage() {
     const [csvFile, setCsvFile] = useState<File | null>(null);
     const [result, setResult] = useState<FixedEffectsResult | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
 
     const handleAnalyze = async () => {
         if (!csvFile) return;
 
-        const response = await analyzeFertility({
-            csvFile,
-            dependentVar: "fertility_rate",
-            independentVars: ["work_hours", "childcare_support_index"],
-        })
-        setResult(response);
+        try {
+            setLoading(true);
+
+            const response = await analyzeFertility({
+                csvFile,
+                dependentVar: "fertility_rate",
+                independentVars: ["work_hours", "childcare_support_index"],
+            });
+
+            setResult(response);
+        } catch (e) {
+            // TODO: improve error handling
+            setError((e as Error).message);
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
