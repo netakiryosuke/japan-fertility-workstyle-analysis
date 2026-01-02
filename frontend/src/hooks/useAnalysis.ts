@@ -18,7 +18,10 @@ export function useAnalysis() {
   const [error, setError] = useState<string | null>(null);
 
   const handleAnalyze = async () => {
-    if (!csvFile) return;
+    if (!csvFile) {
+      setError("Please upload a CSV file.");
+      return;
+    }
 
     try {
       setLoading(true);
