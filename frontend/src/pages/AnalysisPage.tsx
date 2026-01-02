@@ -4,6 +4,7 @@ import analyzeFertility from "../api/analysis";
 
 export default function AnalysisPage() {
     const [csvFile, setCsvFile] = useState<File | null>(null);
+    const [dependentVar, setDependentVar] = useState<string>("");
     const [result, setResult] = useState<FixedEffectsResult | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -17,7 +18,7 @@ export default function AnalysisPage() {
 
             const response = await analyzeFertility({
                 csvFile,
-                dependentVar: "fertility_rate",
+                dependentVar: dependentVar,
                 independentVars: ["work_hours", "childcare_support_index"],
             });
 
@@ -36,6 +37,12 @@ export default function AnalysisPage() {
                 type="file"
                 accept=".csv"
                 onChange={e => setCsvFile(e.target.files?.[0] ?? null)}
+            />
+            <input
+                type="text"
+                value={dependentVar}
+                onChange={e => setDependentVar(e.target.value)}
+                className="border px-2 py-1"
             />
             <button
                 onClick={handleAnalyze}
