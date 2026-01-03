@@ -26,73 +26,103 @@ export default function AnalysisForm({
     error,
 }: Props) {
     return (
-        <div className="p-6 space-y-4">
-            <input
-                type="file"
-                accept=".csv"
-                onChange={e => setCsvFile(e.target.files?.[0] ?? null)}
-            />
+        <div className="min-h-screen flex justify-center items-start pt-16 bg-gray-50">
+            <div className="w-full max-w-xl bg-white rounded-xl shadow p-6 space-y-6">
+                <h1 className="text-xl font-semibold text-center">
+                    Fixed Effects Analysis
+                </h1>
 
-            <input
-                type="text"
-                value={dependentVar}
-                onChange={e => setDependentVar(e.target.value)}
-                className="border px-2 py-1"
-            />
-
-            {independentVars.map((value, index) => (
-                <div key={index} className="flex items-center gap-2">
+                <div className="space-y-1">
+                    <label className="block text-sm font-medium">
+                        CSVファイル
+                    </label>
                     <input
-                        type="checkbox"
-                        checked={value.selected}
-                        onChange={() =>
-                            setIndependentVars(prev =>
-                                prev.map((independentVar, i) =>
-                                    i === index
-                                        ? { ...independentVar, selected: !independentVar.selected }
-                                        : independentVar
-                                )
-                            )
-                        }
-                    />
-                    <input
-                        type="text"
-                        value={value.name}
-                        onChange={e =>
-                            setIndependentVars(prev =>
-                                prev.map((independentVar, i) =>
-                                    i === index
-                                        ? { ...independentVar, name: e.target.value }
-                                        : independentVar
-                                )
-                            )
-                        }
-                        className="border px-2 py-1"
+                        type="file"
+                        accept=".csv"
+                        onChange={e => setCsvFile(e.target.files?.[0] ?? null)}
+                        className="block w-full text-sm"
                     />
                 </div>
-            ))}
 
-            <button
-                onClick={() =>
-                    setIndependentVars(prev => [
-                        ...prev,
-                        { name: "", selected: false },
-                    ])
-                }
-                className="px-2 py-1 border rounded"
-            >
-                ＋
-            </button>
+                <div className="space-y-1">
+                    <label className="block text-sm font-medium">
+                        被説明変数（Dependent Variable）
+                    </label>
+                    <input
+                        type="text"
+                        value={dependentVar}
+                        onChange={e => setDependentVar(e.target.value)}
+                        placeholder="例：fertility_rate"
+                        className="w-full border rounded px-3 py-2 text-sm"
+                    />
+                </div>
 
-            <button
-                onClick={onAnalyze}
-                disabled={loading}
-                className="px-4 py-2 bg-blue-600 text-white rounded"
-            >
-                {loading ? "Analyzing..." : "Analyze"}
-            </button>
+                <div className="space-y-2">
+                    <label className="block text-sm font-medium">
+                        説明変数（Independent Variables）
+                    </label>
 
-            {error && <div className="text-red-600">{error}</div>}
+                    {independentVars.map((value, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                checked={value.selected}
+                                onChange={() =>
+                                    setIndependentVars(prev =>
+                                        prev.map((independentVar, i) =>
+                                            i === index
+                                                ? { ...independentVar, selected: !independentVar.selected }
+                                                : independentVar
+                                        )
+                                    )
+                                }
+                            />
+                            <input
+                                type="text"
+                                value={value.name}
+                                onChange={e =>
+                                    setIndependentVars(prev =>
+                                        prev.map((independentVar, i) =>
+                                            i === index
+                                                ? { ...independentVar, name: e.target.value }
+                                                : independentVar
+                                        )
+                                    )
+                                }
+                                placeholder="例：female_employment_rate"
+                                className="flex-1 border rounded px-3 py-2 text-sm"
+                            />
+                        </div>
+                    ))}
+
+                    <button
+                        onClick={() =>
+                            setIndependentVars(prev => [
+                                ...prev,
+                                { name: "", selected: false },
+                            ])
+                        }
+                        className="text-sm text-blue-600 hover:underline"
+                    >
+                        ＋ 説明変数を追加
+                    </button>
+                </div>
+
+                <button
+                    onClick={onAnalyze}
+                    disabled={loading}
+                    className="w-full py-2 bg-blue-600 text-white rounded font-medium disabled:opacity-60"
+                >
+                    {loading ? "Analyzing..." : "Analyze"}
+                </button>
+
+                {error && (
+                    <div className="text-sm text-red-600 text-center">
+                        {error}
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
+
