@@ -23,15 +23,27 @@ export function useAnalysis() {
       return;
     }
 
+    const selectedIndependentVars = independentVars
+      .filter((independentVar) => independentVar.selected)
+      .map((independentVar) => independentVar.name.trim());
+
+    if (selectedIndependentVars.length === 0) {
+      setError("Please select at least one independent variable.");
+      return;
+    }
+
+    if (selectedIndependentVars.some((name) => name === "")) {
+      setError("Selected independent variables must not be empty.");
+      return;
+    }
+
     try {
       setLoading(true);
 
       const response = await analyzeFertility({
         csvFile,
         dependentVar,
-        independentVars: independentVars
-          .filter((independentVar) => independentVar.selected)
-          .map((independentVar) => independentVar.name),
+        independentVars: selectedIndependentVars,
       });
 
       setResult(response);
