@@ -19,11 +19,11 @@ export default function AnalysisResult({ result }: Props) {
                 space-y-4
             ">
                 <h2 className="text-lg font-semibold text-center">
-                    Fixed Effects Regression Result
+                    Result
                 </h2>
 
-                <CoefficientTable result={result} />
                 <ModelSummary result={result} />
+                <CoefficientTable result={result} />
             </div>
         </div>
     );
