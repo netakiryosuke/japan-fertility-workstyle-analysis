@@ -33,11 +33,8 @@ npm run build)
 ```bash
 docker compose up --build
 ```
-
-4. **アクセス**
-- フロントエンド: http://localhost
-- バックエンドAPI: http://localhost:8000
-- APIドキュメント: http://localhost:8000/docs
+### Webアプリへのアクセス
+http://localhost
 
 
 ## 固定効果モデルについて
