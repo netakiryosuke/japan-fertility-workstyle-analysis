@@ -10,13 +10,21 @@ export default function AnalysisResult({ result }: Props) {
     if (!result) return null;
 
     return (
-        <div className="mt-6 space-y-4">
-            <h2 className="text-lg font-semibold">
-                Fixed Effects Regression Result
-            </h2>
+        <div className="flex justify-center">
+            <div className="
+                w-full max-w-3xl
+                bg-white
+                border rounded-lg shadow
+                p-6
+                space-y-4
+            ">
+                <h2 className="text-lg font-semibold text-center">
+                    Fixed Effects Regression Result
+                </h2>
 
-            <CoefficientTable result={result} />
-            <ModelSummary result={result} />
+                <CoefficientTable result={result} />
+                <ModelSummary result={result} />
+            </div>
         </div>
     );
 }
