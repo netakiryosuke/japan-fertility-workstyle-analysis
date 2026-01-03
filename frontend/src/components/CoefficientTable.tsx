@@ -1,5 +1,5 @@
 import type FixedEffectsResult from "../types/fixedEffectsResult"
-import calculateSignificanceStars from "../utils/calculateSignificantStars"
+import calculateSignificanceStars from "../utils/calculateSignificanceStars"
 import formatNumber from "../utils/formatNumber"
 
 interface Props {
