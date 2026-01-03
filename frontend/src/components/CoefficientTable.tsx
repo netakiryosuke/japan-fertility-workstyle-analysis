@@ -1,4 +1,4 @@
-import type { FixedEffectsResult } from "../types/fixedEffectsResult"
+import type FixedEffectsResult from "../types/fixedEffectsResult"
 import calculateSignificanceStars from "../utils/calculateSignificantStars"
 import formatNumber from "../utils/formatNumber"
 

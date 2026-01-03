@@ -1,6 +1,6 @@
 import { useState } from "react";
 import analyzeFertility from "../api/analysis";
-import type { FixedEffectsResult } from "../types/fixedEffectsResult";
+import type FixedEffectsResult from "../types/fixedEffectsResult";
 import type IndependentVar from "../types/independentVar";
 
 export function useAnalysis() {
