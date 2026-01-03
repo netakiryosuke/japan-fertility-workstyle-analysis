@@ -53,7 +53,7 @@ export default function AnalysisForm({
                         value={dependentVar}
                         onChange={e => setDependentVar(e.target.value)}
                         placeholder="例：fertility_rate"
-                        className="w-full border rounded px-3 py-2 text-sm"
+                        className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
 
@@ -117,7 +117,9 @@ export default function AnalysisForm({
                 <button
                     onClick={onAnalyze}
                     disabled={loading}
-                    className="w-full py-2 bg-blue-600 text-white rounded font-medium disabled:opacity-60"
+                    className="w-full py-2 bg-blue-600 text-white rounded font-medium
+                    hover:bg-blue-700 transition cursor-pointer
+                    disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                     {loading ? "Analyzing..." : "Analyze"}
                 </button>
