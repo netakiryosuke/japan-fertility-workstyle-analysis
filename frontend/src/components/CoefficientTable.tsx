@@ -1,5 +1,6 @@
 import type { FixedEffectsResult } from "../types/fixedEffectsResult"
 import calculateSignificanceStars from "../utils/calculateSignificantStars"
+import formatNumber from "../utils/formatNumber"
 
 interface Props {
     result: FixedEffectsResult
@@ -28,19 +29,19 @@ export default function CoefficientTable({ result }: Props) {
                             <tr key={v} className="border-t">
                                 <td className="px-3 py-2">{v}</td>
                                 <td className="px-3 py-2 text-right">
-                                    {result.params[v]}
+                                    {formatNumber(result.params[v])}
                                 </td>
                                 <td className="px-3 py-2 text-right">
-                                    {result.std_errors[v]}
+                                    {formatNumber(result.std_errors[v])}
                                 </td>
                                 <td className="px-3 py-2 text-right">
-                                    {result.tstats[v]}
+                                    {formatNumber(result.tstats[v])}
                                 </td>
                                 <td
                                     className={`px-3 py-2 text-right ${p < 0.05 ? "font-semibold text-gray-900" : "text-gray-600"
                                         }`}
                                 >
-                                    {p} {calculateSignificanceStars(p)}
+                                    {formatNumber(p)} {calculateSignificanceStars(p)}
                                 </td>
                             </tr>
                         )
