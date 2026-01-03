@@ -16,7 +16,7 @@ if web_config.all_cors_origins:
         CORSMiddleware,
         allow_origins=web_config.all_cors_origins,
         allow_credentials=True,
-        allow_methods=["*"],
+        allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
         allow_headers=["*"],
     )
 
