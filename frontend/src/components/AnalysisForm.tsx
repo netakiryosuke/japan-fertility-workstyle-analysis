@@ -16,6 +16,7 @@ interface Props {
 }
 
 export default function AnalysisForm({
+    csvFile,
     setCsvFile,
     dependentVar,
     setDependentVar,
@@ -36,12 +37,22 @@ export default function AnalysisForm({
                     <label className="block text-sm font-medium">
                         CSVファイル
                     </label>
-                    <input
-                        type="file"
-                        accept=".csv"
-                        onChange={e => setCsvFile(e.target.files?.[0] ?? null)}
-                        className="block w-full text-sm"
-                    />
+
+                    <label className="inline-flex items-center gap-3 px-2 py-1 border rounded cursor-pointer hover:bg-gray-100 transition">
+                        <span className="text-sm text-gray-700">
+                            ファイルを選択
+                        </span>
+                        <input
+                            type="file"
+                            accept=".csv"
+                            onChange={e => setCsvFile(e.target.files?.[0] ?? null)}
+                            className="hidden"
+                        />
+                    </label>
+
+                    <div className="text-xs text-gray-500">
+                        {csvFile ? `選択中: ${csvFile.name}` : "ファイルは選択されていません"}
+                    </div>
                 </div>
 
                 <div className="space-y-1">
@@ -52,7 +63,7 @@ export default function AnalysisForm({
                         type="text"
                         value={dependentVar}
                         onChange={e => setDependentVar(e.target.value)}
-                        placeholder="例：fertility_rate"
+                        placeholder="例：TFR"
                         className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
@@ -94,7 +105,7 @@ export default function AnalysisForm({
                                             )
                                         )
                                     }
-                                    placeholder="例：female_employment_rate"
+                                    placeholder="例：unmarried"
                                     className="flex-1 border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
                             </div>
@@ -108,7 +119,7 @@ export default function AnalysisForm({
                                 { name: "", selected: false },
                             ])
                         }
-                        className="text-sm text-blue-600 hover:text-blue-800 transition"
+                        className="text-sm text-blue-600 hover:text-blue-800 transition cursor-pointer"
                     >
                         ＋ 説明変数を追加
                     </button>
