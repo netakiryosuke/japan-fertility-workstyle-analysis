@@ -29,10 +29,10 @@ export default function CoefficientTable({ result }: Props) {
                             <tr key={v} className="border-t">
                                 <td className="px-3 py-2">{v}</td>
                                 <td className="px-3 py-2 text-right">
-                                    {formatNumber(result.params[v])}
+                                    {formatNumber(result.params[v], 7)}
                                 </td>
                                 <td className="px-3 py-2 text-right">
-                                    {formatNumber(result.std_errors[v])}
+                                    {formatNumber(result.std_errors[v], 7)}
                                 </td>
                                 <td className="px-3 py-2 text-right">
                                     {formatNumber(result.tstats[v])}
