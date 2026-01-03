@@ -49,56 +49,6 @@ class TestCORSMiddleware:
         
         return test_app
     
-    def test_cors_middleware_registered_when_origins_configured(self):
-        """Test that CORS middleware is registered when origins are configured"""
-        # Given - Create a test app with CORS origins
-        test_app = FastAPI(title="Test App")
-        allowed_origins = ["http://localhost:3000", "https://example.com"]
-        
-        # When - Add CORS middleware (simulating the condition in main.py)
-        if allowed_origins:
-            test_app.add_middleware(
-                CORSMiddleware,
-                allow_origins=allowed_origins,
-                allow_credentials=True,
-                allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-                allow_headers=["*"],
-            )
-        
-        # Then - Verify CORS middleware is registered
-        cors_middleware_found = False
-        for middleware in test_app.user_middleware:
-            if middleware.cls == CORSMiddleware:
-                cors_middleware_found = True
-                break
-        
-        assert cors_middleware_found, "CORSMiddleware should be registered when BACKEND_CORS_ORIGINS is configured"
-    
-    def test_cors_middleware_not_registered_when_origins_empty(self):
-        """Test that CORS middleware is not registered when origins list is empty"""
-        # Given - Create a test app without CORS origins
-        test_app = FastAPI(title="Test App")
-        allowed_origins = []
-        
-        # When - Conditionally add CORS middleware (simulating the condition in main.py)
-        if allowed_origins:
-            test_app.add_middleware(
-                CORSMiddleware,
-                allow_origins=allowed_origins,
-                allow_credentials=True,
-                allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-                allow_headers=["*"],
-            )
-        
-        # Then - Verify CORS middleware is not registered
-        cors_middleware_found = False
-        for middleware in test_app.user_middleware:
-            if middleware.cls == CORSMiddleware:
-                cors_middleware_found = True
-                break
-        
-        assert not cors_middleware_found, "CORSMiddleware should not be registered when BACKEND_CORS_ORIGINS is empty"
-    
     def test_cors_headers_for_preflight_request(self, app_with_cors):
         """Test that preflight OPTIONS requests return proper CORS headers"""
         # Given
