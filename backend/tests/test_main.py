@@ -1,4 +1,7 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.testclient import TestClient
+import pytest
 
 from app.main import app
 
@@ -25,3 +28,101 @@ class TestAppMain:
         # Verify analysis endpoint is registered
         paths = [route.path for route in app.routes]
         assert "/analysis" in paths
+
+
+class TestCORSMiddleware:
+    @pytest.fixture
+    def app_with_cors(self):
+        """Helper fixture to create a test app with CORS enabled"""
+        test_app = FastAPI(title="Test App")
+        test_app.add_middleware(
+            CORSMiddleware,
+            allow_origins=["http://localhost:3000"],
+            allow_credentials=True,
+            allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+            allow_headers=["*"],
+        )
+        
+        @test_app.get("/health")
+        def health():
+            return {"status": "ok"}
+        
+        return test_app
+    
+    def test_cors_headers_for_preflight_request(self, app_with_cors):
+        """Test that preflight OPTIONS requests return proper CORS headers"""
+        # Given
+        client = TestClient(app_with_cors)
+        
+        # When - Make a preflight OPTIONS request
+        response = client.options(
+            "/health",
+            headers={
+                "Origin": "http://localhost:3000",
+                "Access-Control-Request-Method": "GET",
+            }
+        )
+        
+        # Then - Verify CORS headers are present
+        assert response.status_code == 200
+        assert "access-control-allow-origin" in response.headers
+        assert response.headers["access-control-allow-origin"] == "http://localhost:3000"
+        assert "access-control-allow-credentials" in response.headers
+        assert response.headers["access-control-allow-credentials"] == "true"
+        assert "access-control-allow-methods" in response.headers
+    
+    def test_cors_headers_for_actual_request_with_allowed_origin(self, app_with_cors):
+        """Test that actual requests with allowed origins receive CORS headers"""
+        # Given
+        client = TestClient(app_with_cors)
+        
+        # When - Make an actual request with Origin header
+        response = client.get(
+            "/health",
+            headers={"Origin": "http://localhost:3000"}
+        )
+        
+        # Then - Verify CORS headers are present
+        assert response.status_code == 200
+        assert "access-control-allow-origin" in response.headers
+        assert response.headers["access-control-allow-origin"] == "http://localhost:3000"
+        assert "access-control-allow-credentials" in response.headers
+        assert response.headers["access-control-allow-credentials"] == "true"
+    
+    def test_cors_headers_not_present_for_disallowed_origin(self, app_with_cors):
+        """Test that requests with disallowed origins do not receive CORS headers"""
+        # Given
+        client = TestClient(app_with_cors)
+        
+        # When - Make a request with a disallowed origin
+        response = client.get(
+            "/health",
+            headers={"Origin": "http://evil.com"}
+        )
+        
+        # Then - Verify CORS headers are not present for disallowed origins
+        assert response.status_code == 200
+        # CORS middleware will reject the origin by not including the header
+        assert "access-control-allow-origin" not in response.headers
+    
+    def test_cors_configured_methods_are_allowed(self, app_with_cors):
+        """Test that configured HTTP methods are allowed in CORS"""
+        # Given
+        client = TestClient(app_with_cors)
+        
+        # When - Make a preflight request
+        response = client.options(
+            "/health",
+            headers={
+                "Origin": "http://localhost:3000",
+                "Access-Control-Request-Method": "POST",
+            }
+        )
+        
+        # Then - Verify the methods are in the allow-methods header
+        assert response.status_code == 200
+        assert "access-control-allow-methods" in response.headers
+        methods_header = response.headers["access-control-allow-methods"]
+        # Verify that key methods are present in the header
+        for method in ["GET", "POST", "PUT", "DELETE"]:
+            assert method in methods_header
