@@ -40,5 +40,5 @@ class FixedEffectsAnalysisService:
             rsquared_within=result.rsquared_within,
             rsquared_between=result.rsquared_between,
             rsquared_overall=result.rsquared_overall,
-            dropped_variables=dropped_vars
+            dropped_vars=dropped_vars
         )

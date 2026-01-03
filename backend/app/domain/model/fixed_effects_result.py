@@ -10,4 +10,4 @@ class FixedEffectsResult:
     rsquared_within: float
     rsquared_between: float
     rsquared_overall: float
-    dropped_variables: list[str]
+    dropped_vars: list[str]
