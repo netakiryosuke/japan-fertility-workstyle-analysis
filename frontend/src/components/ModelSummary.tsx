@@ -1,4 +1,4 @@
-import type { FixedEffectsResult } from "../types/fixedEffectsResult"
+import type FixedEffectsResult from "../types/fixedEffectsResult"
 import formatNumber from "../utils/formatNumber"
 
 interface Props {
