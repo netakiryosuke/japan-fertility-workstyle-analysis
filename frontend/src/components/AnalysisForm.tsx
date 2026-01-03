@@ -118,6 +118,7 @@ export default function AnalysisForm({
                                     }
                                     className="
                                         text-gray-400 hover:text-red-500
+                                        text-lg font-bold
                                         transition
                                         cursor-pointer
                                     "
