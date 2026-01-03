@@ -325,7 +325,7 @@ raise MissingColumnsException(missing_columns=["fertility_rate"])
 
 ## 🎯 今後の拡張案
 
-- [ ] 認証・認証の追加
+- [ ] 認証・認可の追加
 - [ ] データベースへの分析履歴の保存
 - [ ] 複数のモデル（ランダム効果モデル等）のサポート
 - [ ] 非同期処理による大規模データ対応
