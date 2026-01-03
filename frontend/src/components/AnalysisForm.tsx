@@ -62,38 +62,44 @@ export default function AnalysisForm({
                         説明変数（Independent Variables）
                     </label>
 
-                    {independentVars.map((value, index) => (
-                        <div key={index} className="flex items-center gap-2">
-                            <input
-                                type="checkbox"
-                                checked={value.selected}
-                                onChange={() =>
-                                    setIndependentVars(prev =>
-                                        prev.map((independentVar, i) =>
-                                            i === index
-                                                ? { ...independentVar, selected: !independentVar.selected }
-                                                : independentVar
+                    <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
+                        {independentVars.map((value, index) => (
+                            <div
+                                key={index}
+                                className="flex items-center gap-2 rounded px-2 py-1 hover:bg-gray-50"
+                            >
+                                <input
+                                    type="checkbox"
+                                    checked={value.selected}
+                                    className="cursor-pointer"
+                                    onChange={() =>
+                                        setIndependentVars(prev =>
+                                            prev.map((independentVar, i) =>
+                                                i === index
+                                                    ? { ...independentVar, selected: !independentVar.selected }
+                                                    : independentVar
+                                            )
                                         )
-                                    )
-                                }
-                            />
-                            <input
-                                type="text"
-                                value={value.name}
-                                onChange={e =>
-                                    setIndependentVars(prev =>
-                                        prev.map((independentVar, i) =>
-                                            i === index
-                                                ? { ...independentVar, name: e.target.value }
-                                                : independentVar
+                                    }
+                                />
+                                <input
+                                    type="text"
+                                    value={value.name}
+                                    onChange={e =>
+                                        setIndependentVars(prev =>
+                                            prev.map((independentVar, i) =>
+                                                i === index
+                                                    ? { ...independentVar, name: e.target.value }
+                                                    : independentVar
+                                            )
                                         )
-                                    )
-                                }
-                                placeholder="例：female_employment_rate"
-                                className="flex-1 border rounded px-3 py-2 text-sm"
-                            />
-                        </div>
-                    ))}
+                                    }
+                                    placeholder="例：female_employment_rate"
+                                    className="flex-1 border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                        ))}
+                    </div>
 
                     <button
                         onClick={() =>
@@ -102,7 +108,7 @@ export default function AnalysisForm({
                                 { name: "", selected: false },
                             ])
                         }
-                        className="text-sm text-blue-600 hover:underline"
+                        className="text-sm text-blue-600 hover:text-blue-800 transition"
                     >
                         ＋ 説明変数を追加
                     </button>
