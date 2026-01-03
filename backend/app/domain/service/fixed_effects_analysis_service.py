@@ -39,7 +39,7 @@ class FixedEffectsAnalysisService:
             dropped_vars=self._get_dropped_variables(result)
         )
         
-    def _get_dropped_variables(self, result) -> list[str]:
+    def _get_dropped_variables(self, result: FixedEffectsResult) -> list[str]:
         estimated_vars = set(result.params.index)
         original_vars = set(self.independent_vars)
         return sorted(original_vars - estimated_vars)
