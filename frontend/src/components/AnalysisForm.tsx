@@ -134,6 +134,7 @@ export default function AnalysisForm({
                     </div>
 
                     <button
+                        type="button"
                         onClick={() =>
                             setIndependentVars(prev => [
                                 ...prev,
@@ -147,6 +148,7 @@ export default function AnalysisForm({
                 </div>
 
                 <button
+                    type="button"
                     onClick={onAnalyze}
                     disabled={loading}
                     className="w-full py-2 bg-blue-600 text-white rounded font-medium
