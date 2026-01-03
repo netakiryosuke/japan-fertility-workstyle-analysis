@@ -116,7 +116,7 @@ export default function AnalysisForm({
                         onClick={() =>
                             setIndependentVars(prev => [
                                 ...prev,
-                                { name: "", selected: false },
+                                { name: "", selected: true },
                             ])
                         }
                         className="text-sm text-blue-600 hover:text-blue-800 transition cursor-pointer"

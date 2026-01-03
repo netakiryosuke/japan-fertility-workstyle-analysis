@@ -11,7 +11,7 @@ export function useAnalysis() {
   const [csvFile, setCsvFile] = useState<File | null>(null);
   const [dependentVar, setDependentVar] = useState<string>("");
   const [independentVars, setIndependentVars] = useState<IndependentVar[]>([
-    { name: "", selected: false },
+    { name: "", selected: true },
   ]);
   const [result, setResult] = useState<FixedEffectsResult | null>(null);
   const [loading, setLoading] = useState(false);
