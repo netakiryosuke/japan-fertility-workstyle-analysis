@@ -23,7 +23,7 @@ class FixedEffectsAnalysisService:
         y = df[self.dependent_var]
         x = df[self.independent_vars]
 
-        fixed_effects_model = PanelOLS(y, x, entity_effects=True)
+        fixed_effects_model = PanelOLS(y, x, entity_effects=True, drop_absorbed=True)
 
         result = fixed_effects_model.fit()
 
