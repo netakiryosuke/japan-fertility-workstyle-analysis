@@ -1,7 +1,4 @@
-interface IndependentVar {
-    name: string;
-    selected: boolean;
-}
+import type IndependentVar from "../types/independentVar";
 
 interface Props {
     csvFile: File | null;

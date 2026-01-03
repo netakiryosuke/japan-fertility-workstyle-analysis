@@ -1,11 +1,7 @@
 import { useState } from "react";
 import analyzeFertility from "../api/analysis";
 import type { FixedEffectsResult } from "../types/fixedEffectsResult";
-
-interface IndependentVar {
-  name: string;
-  selected: boolean;
-}
+import type IndependentVar from "../types/independentVar";
 
 export function useAnalysis() {
   const [csvFile, setCsvFile] = useState<File | null>(null);
