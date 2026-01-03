@@ -11,10 +11,10 @@ app = FastAPI(
     title="Japan Fertility Workstyle Analysis API",
 )
 
-if web_config.all_cors_origins:
+if web_config.BACKEND_CORS_ORIGINS:
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=web_config.all_cors_origins,
+        allow_origins=web_config.BACKEND_CORS_ORIGINS,
         allow_credentials=True,
         allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
         allow_headers=["*"],

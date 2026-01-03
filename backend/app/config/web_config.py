@@ -1,27 +1,23 @@
 from typing import Annotated, Any
 
-from pydantic import AnyUrl, BeforeValidator, computed_field
-from pydantic_settings import BaseSettings
+from pydantic import BeforeValidator
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
-def parse_cors(v: Any) -> list[str] | str:
-    if isinstance(v, str) and not v.startswith("["):
-        return [i.strip() for i in v.split(",") if i.strip()]
-    elif isinstance(v, (list, str)):
-        return v
+def parse_cors(v: Any) -> list[str]:
+    if isinstance(v, str):
+        return [i.strip().rstrip("/") for i in v.split(",") if i.strip()]
+    if isinstance(v, list):
+        return [str(i).rstrip("/") for i in v]
     raise ValueError(v)
 
 class WebConfig(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        case_sensitive=True,
+    )
+
     BACKEND_CORS_ORIGINS: Annotated[
-        list[AnyUrl] | str, BeforeValidator(parse_cors)
+        list[str], BeforeValidator(parse_cors)
     ] = []
-    FRONTEND_HOST: str = ""
-    
-    @computed_field
-    @property
-    def all_cors_origins(self) -> list[str]:
-        origins = [str(origin).rstrip("/") for origin in self.BACKEND_CORS_ORIGINS]
-        if self.FRONTEND_HOST:
-            origins.append(self.FRONTEND_HOST.rstrip("/"))
-        return origins
-    
+
 web_config = WebConfig()
