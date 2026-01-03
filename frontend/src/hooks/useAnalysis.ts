@@ -9,9 +9,17 @@ interface IndependentVar {
 
 export function useAnalysis() {
   const [csvFile, setCsvFile] = useState<File | null>(null);
-  const [dependentVar, setDependentVar] = useState<string>("");
+  const [dependentVar, setDependentVar] = useState<string>("TFR");
   const [independentVars, setIndependentVars] = useState<IndependentVar[]>([
-    { name: "", selected: true },
+    { name: "unmarried", selected: true },
+    { name: "employment_rate", selected: true },
+    { name: "w_time", selected: true },
+    { name: "w_overtime", selected: true },
+    { name: "wage_hour", selected: true },
+    { name: "telework_com", selected: true },
+    { name: "d_tokyo", selected: true },
+    { name: "d_okinawa", selected: true },
+    { name: "d_covid", selected: true },
   ]);
   const [result, setResult] = useState<FixedEffectsResult | null>(null);
   const [loading, setLoading] = useState(false);
