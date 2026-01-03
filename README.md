@@ -3,10 +3,15 @@
 都道府県レベルのパネルデータを用いて、日本における働き方改革が出生率に与える影響を評価する分析ツールです。
 
 
-## プロジェクト概要
+## 概要
 
-本プロジェクトは、日本の働き方改革と出生率の関係性を統計的に分析するためのWebアプリケーションです。ユーザーは都道府県別・年次別のパネルデータをCSVファイルとしてアップロードし、固定効果モデル（Fixed Effects Model）を用いた回帰分析を実行できます。
+日本の働き方改革と出生率の関係性を統計的に分析するためのWebアプリケーションです。ユーザーは都道府県別・年次別のパネルデータをCSVファイルとしてアップロードし、固定効果モデル（Fixed Effects Model）を用いた回帰分析を実行できます。
 
+### 分析フォーム
+<img width="1920" height="846" alt="Japan Fertility Workstyle Analysis - Google Chrome 2026_01_04 7_26_30" src="https://github.com/user-attachments/assets/d8110243-7a01-4492-8fda-ab8e66ba2f77" />
+
+### 分析結果
+<img width="1920" height="784" alt="Japan Fertility Workstyle Analysis - Google Chrome 2026_01_04 7_27_16" src="https://github.com/user-attachments/assets/7fd0aa32-6b03-4c11-afb8-932d3d8fac9c" />
 
 ## 要件
 - Python 3.12
@@ -40,7 +45,7 @@ http://localhost
 ## 固定効果モデルについて
 
 ### 固定効果モデルとは
-固定効果モデル（Fixed Effects Model）は、パネルデータ分析において個体固有の特性（観測できない異質性）をコントロールするための統計手法です。本プロジェクトでは、各都道府県固有の特性（文化、地理的要因など）を固定効果として考慮します。
+固定効果モデル（Fixed Effects Model）は、パネルデータ分析において個体固有の特性（観測できない異質性）をコントロールするための統計手法です。本分析では、各都道府県固有の特性（文化、地理的要因など）を固定効果として考慮します。
 
 ### モデルの数式
 ```
