@@ -111,11 +111,14 @@ export default function AnalysisForm({
 
                                 <button
                                     type="button"
-                                    onClick={() =>
+                                    onClick={() => {
+                                        const ok = window.confirm("この説明変数を削除しますか？");
+                                        if (!ok) return;
+
                                         setIndependentVars(prev =>
                                             prev.filter((_, i) => i !== index)
-                                        )
-                                    }
+                                        );
+                                    }}
                                     className="
                                         text-gray-400 hover:text-red-500
                                         text-lg font-bold
