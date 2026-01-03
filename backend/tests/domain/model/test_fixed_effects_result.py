@@ -10,6 +10,7 @@ class TestFixedEffectsResult:
         std_errors = {"var1": 0.2, "var2": 0.1}
         tstats = {"var1": 7.5, "var2": -3.0}
         pvalues = {"var1": 0.001, "var2": 0.05}
+        dropped_vars = []
         
         # When
         result = FixedEffectsResult(
@@ -20,7 +21,8 @@ class TestFixedEffectsResult:
             pvalues=pvalues,
             rsquared_within=0.75,
             rsquared_between=0.65,
-            rsquared_overall=0.70
+            rsquared_overall=0.70,
+            dropped_vars=dropped_vars
         )
         
         # Then
@@ -32,6 +34,7 @@ class TestFixedEffectsResult:
         assert result.rsquared_within == 0.75
         assert result.rsquared_between == 0.65
         assert result.rsquared_overall == 0.70
+        assert result.dropped_vars == []
         
     def test_fixed_effects_result_is_immutable(self):
         # Given
@@ -43,7 +46,8 @@ class TestFixedEffectsResult:
             pvalues={"var1": 0.001},
             rsquared_within=0.75,
             rsquared_between=0.65,
-            rsquared_overall=0.70
+            rsquared_overall=0.70,
+            dropped_vars=[]
         )
         
         # When / Then

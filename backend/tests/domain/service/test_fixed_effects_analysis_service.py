@@ -34,6 +34,7 @@ class TestFixedEffectsAnalysisService:
         assert "work_hours" in result.params
         assert "income" in result.params
         assert isinstance(result.rsquared_within, float)
+        assert isinstance(result.dropped_vars, list)
         
     def test_analyze_with_single_independent_variable(self):
         # Given
@@ -60,3 +61,4 @@ class TestFixedEffectsAnalysisService:
         assert isinstance(result, FixedEffectsResult)
         assert len(result.params) == 1
         assert "work_hours" in result.params
+        assert isinstance(result.dropped_vars, list)
