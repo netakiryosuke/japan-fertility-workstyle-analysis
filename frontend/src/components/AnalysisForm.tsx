@@ -108,6 +108,23 @@ export default function AnalysisForm({
                                     placeholder="例：unmarried"
                                     className="flex-1 border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
+
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setIndependentVars(prev =>
+                                            prev.filter((_, i) => i !== index)
+                                        )
+                                    }
+                                    className="
+                                        text-gray-400 hover:text-red-500
+                                        transition
+                                        cursor-pointer
+                                    "
+                                    aria-label="delete independent variable"
+                                >
+                                    ×
+                                </button>
                             </div>
                         ))}
                     </div>
