@@ -23,7 +23,7 @@ class FixedEffectsAnalysisService:
         y = df[self.dependent_var]
         x = df[self.independent_vars]
 
-        fixed_effects_model = PanelOLS(y, x, entity_effects=True)
+        fixed_effects_model = PanelOLS(y, x, entity_effects=True, drop_absorbed=True)
 
         result = fixed_effects_model.fit()
 
@@ -35,5 +35,11 @@ class FixedEffectsAnalysisService:
             pvalues=result.pvalues.to_dict(),
             rsquared_within=result.rsquared_within,
             rsquared_between=result.rsquared_between,
-            rsquared_overall=result.rsquared_overall
+            rsquared_overall=result.rsquared_overall,
+            dropped_vars=self._get_dropped_variables(result)
         )
+        
+    def _get_dropped_variables(self, result: FixedEffectsResult) -> list[str]:
+        estimated_vars = set(result.params.index)
+        original_vars = set(self.independent_vars)
+        return sorted(original_vars - estimated_vars)

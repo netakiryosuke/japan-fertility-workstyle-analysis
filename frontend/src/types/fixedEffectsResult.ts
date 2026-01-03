@@ -7,4 +7,5 @@ export default interface FixedEffectsResult {
   rsquared_within: number
   rsquared_between: number
   rsquared_overall: number
+  dropped_vars: string[]
 }
