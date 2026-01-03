@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.testclient import TestClient
+import pytest
 
 from app.main import app
 
@@ -30,6 +31,24 @@ class TestAppMain:
 
 
 class TestCORSMiddleware:
+    @pytest.fixture
+    def app_with_cors(self):
+        """Helper fixture to create a test app with CORS enabled"""
+        test_app = FastAPI(title="Test App")
+        test_app.add_middleware(
+            CORSMiddleware,
+            allow_origins=["http://localhost:3000"],
+            allow_credentials=True,
+            allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+            allow_headers=["*"],
+        )
+        
+        @test_app.get("/health")
+        def health():
+            return {"status": "ok"}
+        
+        return test_app
+    
     def test_cors_middleware_registered_when_origins_configured(self):
         """Test that CORS middleware is registered when origins are configured"""
         # Given - Create a test app with CORS origins
@@ -80,23 +99,10 @@ class TestCORSMiddleware:
         
         assert not cors_middleware_found, "CORSMiddleware should not be registered when BACKEND_CORS_ORIGINS is empty"
     
-    def test_cors_headers_for_preflight_request(self):
+    def test_cors_headers_for_preflight_request(self, app_with_cors):
         """Test that preflight OPTIONS requests return proper CORS headers"""
-        # Given - Create a test app with CORS enabled
-        test_app = FastAPI(title="Test App")
-        test_app.add_middleware(
-            CORSMiddleware,
-            allow_origins=["http://localhost:3000"],
-            allow_credentials=True,
-            allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-            allow_headers=["*"],
-        )
-        
-        @test_app.get("/health")
-        def health():
-            return {"status": "ok"}
-        
-        client = TestClient(test_app)
+        # Given
+        client = TestClient(app_with_cors)
         
         # When - Make a preflight OPTIONS request
         response = client.options(
@@ -115,23 +121,10 @@ class TestCORSMiddleware:
         assert response.headers["access-control-allow-credentials"] == "true"
         assert "access-control-allow-methods" in response.headers
     
-    def test_cors_headers_for_actual_request_with_allowed_origin(self):
+    def test_cors_headers_for_actual_request_with_allowed_origin(self, app_with_cors):
         """Test that actual requests with allowed origins receive CORS headers"""
-        # Given - Create a test app with CORS enabled
-        test_app = FastAPI(title="Test App")
-        test_app.add_middleware(
-            CORSMiddleware,
-            allow_origins=["http://localhost:3000"],
-            allow_credentials=True,
-            allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-            allow_headers=["*"],
-        )
-        
-        @test_app.get("/health")
-        def health():
-            return {"status": "ok"}
-        
-        client = TestClient(test_app)
+        # Given
+        client = TestClient(app_with_cors)
         
         # When - Make an actual request with Origin header
         response = client.get(
@@ -146,23 +139,10 @@ class TestCORSMiddleware:
         assert "access-control-allow-credentials" in response.headers
         assert response.headers["access-control-allow-credentials"] == "true"
     
-    def test_cors_headers_not_present_for_disallowed_origin(self):
+    def test_cors_headers_not_present_for_disallowed_origin(self, app_with_cors):
         """Test that requests with disallowed origins do not receive CORS headers"""
-        # Given - Create a test app with CORS enabled for specific origin
-        test_app = FastAPI(title="Test App")
-        test_app.add_middleware(
-            CORSMiddleware,
-            allow_origins=["http://localhost:3000"],
-            allow_credentials=True,
-            allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-            allow_headers=["*"],
-        )
-        
-        @test_app.get("/health")
-        def health():
-            return {"status": "ok"}
-        
-        client = TestClient(test_app)
+        # Given
+        client = TestClient(app_with_cors)
         
         # When - Make a request with a disallowed origin
         response = client.get(
@@ -173,26 +153,12 @@ class TestCORSMiddleware:
         # Then - Verify CORS headers are not present for disallowed origins
         assert response.status_code == 200
         # CORS middleware will reject the origin by not including the header
-        assert response.headers.get("access-control-allow-origin") != "http://evil.com"
+        assert "access-control-allow-origin" not in response.headers
     
-    def test_cors_configured_methods_are_allowed(self):
+    def test_cors_configured_methods_are_allowed(self, app_with_cors):
         """Test that configured HTTP methods are allowed in CORS"""
-        # Given - Create a test app with specific CORS methods
-        test_app = FastAPI(title="Test App")
-        allowed_methods = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
-        test_app.add_middleware(
-            CORSMiddleware,
-            allow_origins=["http://localhost:3000"],
-            allow_credentials=True,
-            allow_methods=allowed_methods,
-            allow_headers=["*"],
-        )
-        
-        @test_app.get("/health")
-        def health():
-            return {"status": "ok"}
-        
-        client = TestClient(test_app)
+        # Given
+        client = TestClient(app_with_cors)
         
         # When - Make a preflight request
         response = client.options(
