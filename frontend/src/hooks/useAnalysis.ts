@@ -47,6 +47,8 @@ export function useAnalysis() {
 
     try {
       setLoading(true);
+      setResult(null);
+      setError("");
 
       const response = await analyzeFertility({
         csvFile,
