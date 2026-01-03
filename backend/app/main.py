@@ -11,10 +11,6 @@ app = FastAPI(
     title="Japan Fertility Workstyle Analysis API",
 )
 
-app.include_router(api_router)
-app.add_exception_handler(ValueError, handle_value_error)
-app.add_exception_handler(MissingColumnsException, handle_missing_columns_exception)
-app.add_exception_handler(Exception, handle_unexpected_exception)
 if web_config.all_cors_origins:
     app.add_middleware(
         CORSMiddleware,
@@ -23,6 +19,11 @@ if web_config.all_cors_origins:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+app.include_router(api_router)
+app.add_exception_handler(ValueError, handle_value_error)
+app.add_exception_handler(MissingColumnsException, handle_missing_columns_exception)
+app.add_exception_handler(Exception, handle_unexpected_exception)
 
 @app.get("/health")
 def health_check():
