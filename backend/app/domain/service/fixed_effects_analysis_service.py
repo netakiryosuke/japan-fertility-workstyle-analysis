@@ -26,10 +26,6 @@ class FixedEffectsAnalysisService:
         fixed_effects_model = PanelOLS(y, x, entity_effects=True, drop_absorbed=True)
 
         result = fixed_effects_model.fit()
-        
-        estimated_vars = set(result.params.index)
-        original_vars = set(self.independent_vars)
-        dropped_vars = sorted(original_vars - estimated_vars)
 
         return FixedEffectsResult(
             nobs=int(result.nobs),
@@ -40,5 +36,10 @@ class FixedEffectsAnalysisService:
             rsquared_within=result.rsquared_within,
             rsquared_between=result.rsquared_between,
             rsquared_overall=result.rsquared_overall,
-            dropped_vars=dropped_vars
+            dropped_vars=self._get_dropped_variables(result)
         )
+        
+    def _get_dropped_variables(self, result) -> list[str]:
+        estimated_vars = set(result.params.index)
+        original_vars = set(self.independent_vars)
+        return sorted(original_vars - estimated_vars)
