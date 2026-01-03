@@ -27,7 +27,7 @@ export default function AnalysisForm({
     error,
 }: Props) {
     return (
-        <div className="min-h-screen flex justify-center items-start pt-16 bg-gray-50">
+        <div className="flex justify-center">
             <div className="w-full max-w-xl bg-white rounded-xl shadow p-6 space-y-6">
                 <h1 className="text-xl font-semibold text-center">
                     Fixed Effects Analysis

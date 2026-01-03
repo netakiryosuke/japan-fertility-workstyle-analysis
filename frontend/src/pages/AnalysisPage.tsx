@@ -17,21 +17,26 @@ export default function AnalysisPage() {
     }, [analysis.result])
 
     return (
-        <>
-            <AnalysisForm
-                csvFile={analysis.csvFile}
-                setCsvFile={analysis.setCsvFile}
-                dependentVar={analysis.dependentVar}
-                setDependentVar={analysis.setDependentVar}
-                independentVars={analysis.independentVars}
-                setIndependentVars={analysis.setIndependentVars}
-                onAnalyze={analysis.handleAnalyze}
-                loading={analysis.loading}
-                error={analysis.error}
-            />
-            <div ref={resultRef}>
-                <AnalysisResult result={analysis.result} />
+        <div className="min-h-screen bg-gray-50 flex justify-center">
+            <div className="w-full max-w-4xl px-4 py-10 space-y-6">
+                <AnalysisForm
+                    csvFile={analysis.csvFile}
+                    setCsvFile={analysis.setCsvFile}
+                    dependentVar={analysis.dependentVar}
+                    setDependentVar={analysis.setDependentVar}
+                    independentVars={analysis.independentVars}
+                    setIndependentVars={analysis.setIndependentVars}
+                    onAnalyze={analysis.handleAnalyze}
+                    loading={analysis.loading}
+                    error={analysis.error}
+                />
+
+                {analysis.result && (
+                    <div ref={resultRef}>
+                        <AnalysisResult result={analysis.result} />
+                    </div>
+                )}
             </div>
-        </>
+        </div>
     );
 }
