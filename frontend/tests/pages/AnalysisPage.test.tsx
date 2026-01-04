@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import AnalysisPage from './AnalysisPage'
-import type FixedEffectsResult from '../types/fixedEffectsResult'
+import AnalysisPage from '../../src/pages/AnalysisPage'
+import type FixedEffectsResult from '../../src/types/fixedEffectsResult'
 
 // Mock fetch
 global.fetch = vi.fn()
@@ -13,45 +13,38 @@ describe('AnalysisPage - Integration Test', () => {
   })
 
   it('renders form and displays validation error when no CSV file is selected', async () => {
+    // Given
     const user = userEvent.setup()
-
     render(<AnalysisPage />)
 
-    // Verify initial form is displayed
-    expect(screen.getByText('Fixed Effects Analysis')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /analyze/i })).toBeInTheDocument()
-
-    // Click analyze button without selecting a file
+    // When
     const analyzeButton = screen.getByRole('button', { name: /analyze/i })
     await user.click(analyzeButton)
 
-    // Verify error message is displayed
+    // Then
+    expect(screen.getByText('Fixed Effects Analysis')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /analyze/i })).toBeInTheDocument()
     await waitFor(() => {
       expect(screen.getByText('Please upload a CSV file.')).toBeInTheDocument()
     })
-
-    // Verify API was not called
     expect(fetch).not.toHaveBeenCalled()
   })
 
   it('displays validation error when no independent variables are selected', async () => {
+    // Given
     const user = userEvent.setup()
-
     render(<AnalysisPage />)
 
-    // Upload a file by triggering file input
     const file = new File(['content'], 'test.csv', { type: 'text/csv' })
     const fileInput = document.querySelector('input[type="file"][accept=".csv"]') as HTMLInputElement
     if (fileInput) {
       await user.upload(fileInput, file)
     }
 
-    // Wait for file to be displayed
     await waitFor(() => {
       expect(screen.getByText(/選択中: test.csv/)).toBeInTheDocument()
     })
 
-    // Uncheck all independent variables
     const checkboxes = screen.getAllByRole('checkbox')
     for (const checkbox of checkboxes) {
       if ((checkbox as HTMLInputElement).checked) {
@@ -59,20 +52,19 @@ describe('AnalysisPage - Integration Test', () => {
       }
     }
 
-    // Click analyze button
+    // When
     const analyzeButton = screen.getByRole('button', { name: /analyze/i })
     await user.click(analyzeButton)
 
-    // Verify error message is displayed
+    // Then
     await waitFor(() => {
       expect(screen.getByText('Please select at least one independent variable.')).toBeInTheDocument()
     })
-
-    // Verify API was not called
     expect(fetch).not.toHaveBeenCalled()
   })
 
   it('calls API and displays results when valid data is submitted', async () => {
+    // Given
     const user = userEvent.setup()
 
     const mockResult: FixedEffectsResult = {
@@ -99,33 +91,29 @@ describe('AnalysisPage - Integration Test', () => {
       dropped_vars: [],
     }
 
-    // Mock successful API response
     const mockFetch = vi.mocked(fetch)
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: async () => mockResult,
     } as Response)
 
-    // Render the page
     render(<AnalysisPage />)
 
-    // Upload a file
     const file = new File(['content'], 'test.csv', { type: 'text/csv' })
     const fileInput = document.querySelector('input[type="file"][accept=".csv"]') as HTMLInputElement
     if (fileInput) {
       await user.upload(fileInput, file)
     }
 
-    // Wait for file to be displayed
     await waitFor(() => {
       expect(screen.getByText(/選択中: test.csv/)).toBeInTheDocument()
     })
 
-    // Click analyze button
+    // When
     const analyzeButton = screen.getByRole('button', { name: /analyze/i })
     await user.click(analyzeButton)
 
-    // Verify API was called
+    // Then
     await waitFor(() => {
       expect(mockFetch).toHaveBeenCalledTimes(1)
     })
@@ -134,24 +122,20 @@ describe('AnalysisPage - Integration Test', () => {
     expect(callArgs[0]).toContain('/analysis')
     expect(callArgs[1]?.method).toBe('POST')
 
-    // Wait for results to be displayed
     await waitFor(() => {
       expect(screen.getByText('Result')).toBeInTheDocument()
     })
 
-    // Verify result statistics are displayed
     expect(screen.getByText(/R² \(within\) = 0\.75/)).toBeInTheDocument()
     expect(screen.getByText(/Number of observations = 100/)).toBeInTheDocument()
-
-    // Verify coefficient table is displayed with variables
     expect(screen.getByText('unmarried')).toBeInTheDocument()
     expect(screen.getByText('employment_rate')).toBeInTheDocument()
   })
 
   it('displays error message when API call fails', async () => {
+    // Given
     const user = userEvent.setup()
 
-    // Mock failed API response
     const mockFetch = vi.mocked(fetch)
     mockFetch.mockResolvedValueOnce({
       ok: false,
@@ -163,28 +147,25 @@ describe('AnalysisPage - Integration Test', () => {
 
     render(<AnalysisPage />)
 
-    // Upload a file
     const file = new File(['content'], 'test.csv', { type: 'text/csv' })
     const fileInput = document.querySelector('input[type="file"][accept=".csv"]') as HTMLInputElement
     if (fileInput) {
       await user.upload(fileInput, file)
     }
 
-    // Wait for file to be displayed
     await waitFor(() => {
       expect(screen.getByText(/選択中: test.csv/)).toBeInTheDocument()
     })
 
-    // Click analyze button
+    // When
     const analyzeButton = screen.getByRole('button', { name: /analyze/i })
     await user.click(analyzeButton)
 
-    // Wait for error message to be displayed
+    // Then
     await waitFor(() => {
       expect(screen.getByText('Invalid CSV file format')).toBeInTheDocument()
     }, { timeout: 3000 })
 
-    // Verify result is not displayed
     expect(screen.queryByText('Result')).not.toBeInTheDocument()
   })
 })

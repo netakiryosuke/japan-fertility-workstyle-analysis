@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import analyzeFertility from './analysis'
-import type FixedEffectsResult from '../types/fixedEffectsResult'
+import analyzeFertility from '../../src/api/analysis'
+import type FixedEffectsResult from '../../src/types/fixedEffectsResult'
 
 // Mock fetch
 global.fetch = vi.fn()
@@ -11,6 +11,7 @@ describe('analyzeFertility', () => {
   })
 
   it('calls backend API with correct parameters', async () => {
+    // Given
     const mockResult: FixedEffectsResult = {
       nobs: 100,
       params: { unmarried: 0.5 },
@@ -33,29 +34,28 @@ describe('analyzeFertility', () => {
     const dependentVar = 'TFR'
     const independentVars = ['unmarried', 'employment_rate']
 
+    // When
     const result = await analyzeFertility({
       csvFile,
       dependentVar,
       independentVars,
     })
 
-    // Verify fetch was called
+    // Then
     expect(mockFetch).toHaveBeenCalledTimes(1)
 
-    // Verify fetch was called with correct URL
     const callArgs = mockFetch.mock.calls[0]
     expect(callArgs[0]).toContain('/analysis')
 
-    // Verify request method and FormData
     const requestOptions = callArgs[1]
     expect(requestOptions?.method).toBe('POST')
     expect(requestOptions?.body).toBeInstanceOf(FormData)
 
-    // Verify result
     expect(result).toEqual(mockResult)
   })
 
   it('throws error when backend returns error response', async () => {
+    // Given
     const mockFetch = vi.mocked(fetch)
     mockFetch.mockResolvedValueOnce({
       ok: false,
@@ -67,6 +67,7 @@ describe('analyzeFertility', () => {
 
     const csvFile = new File(['content'], 'test.csv', { type: 'text/csv' })
 
+    // When & Then
     await expect(
       analyzeFertility({
         csvFile,
@@ -77,6 +78,7 @@ describe('analyzeFertility', () => {
   })
 
   it('throws error with status code when detail is not provided', async () => {
+    // Given
     const mockFetch = vi.mocked(fetch)
     mockFetch.mockResolvedValueOnce({
       ok: false,
@@ -86,6 +88,7 @@ describe('analyzeFertility', () => {
 
     const csvFile = new File(['content'], 'test.csv', { type: 'text/csv' })
 
+    // When & Then
     await expect(
       analyzeFertility({
         csvFile,
@@ -96,6 +99,7 @@ describe('analyzeFertility', () => {
   })
 
   it('includes all independent variables in FormData', async () => {
+    // Given
     const mockResult: FixedEffectsResult = {
       nobs: 100,
       params: {},
@@ -117,13 +121,14 @@ describe('analyzeFertility', () => {
     const csvFile = new File(['content'], 'test.csv', { type: 'text/csv' })
     const independentVars = ['var1', 'var2', 'var3']
 
+    // When
     await analyzeFertility({
       csvFile,
       dependentVar: 'TFR',
       independentVars,
     })
 
-    // Verify FormData was created with correct data
+    // Then
     const callArgs = mockFetch.mock.calls[0]
     const formData = callArgs[1]?.body as FormData
 
