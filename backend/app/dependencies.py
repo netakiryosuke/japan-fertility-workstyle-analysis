@@ -1,7 +1,10 @@
 from fastapi import Depends
 
+from app.infrastructure.csv_dataframe_loader import CsvDataFrameLoader
 from app.application.fertility_analysis_application_service import FertilityAnalysisApplicationService
-from app.infrastructure.dependencies import CsvDataFrameLoader, get_csv_dataframe_loader
+
+def get_csv_dataframe_loader() -> CsvDataFrameLoader:
+    return CsvDataFrameLoader()
 
 def get_fertility_analysis_application_service(
     csv_loader: CsvDataFrameLoader = Depends(get_csv_dataframe_loader),
