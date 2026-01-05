@@ -3,11 +3,11 @@ import pandas as pd
 from app.application.exception.missing_columns_exception import MissingColumnsException
 from app.domain.model.fixed_effects_result import FixedEffectsResult
 from app.domain.service.fixed_effects_analysis_service import FixedEffectsAnalysisService
-from app.infrastructure.csv_dataframe_loader import CsvDataFrameLoader
+from app.domain.dataframe_loader import DataFrameLoader
 
 
 class FertilityAnalysisApplicationService:
-    def __init__(self, csv_loader):
+    def __init__(self, csv_loader: DataFrameLoader):
         self.csv_loader = csv_loader
 
     def analyze(
