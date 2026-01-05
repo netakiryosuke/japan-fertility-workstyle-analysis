@@ -2,7 +2,7 @@ from fastapi import APIRouter, UploadFile, File, Form, Depends
 
 from app.application.fertility_analysis_application_service import FertilityAnalysisApplicationService
 from app.domain.model.fixed_effects_result import FixedEffectsResult
-from app.application.dependencies import get_fertility_analysis_application_service
+from app.dependencies import get_fertility_analysis_application_service
 
 router = APIRouter(prefix="/analysis", tags=["analysis"])
 

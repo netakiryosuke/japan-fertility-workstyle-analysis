@@ -1,6 +1,6 @@
 from unittest.mock import Mock
 
-from app.application.dependencies import get_fertility_analysis_application_service
+from app.dependencies import get_fertility_analysis_application_service
 from app.application.fertility_analysis_application_service import FertilityAnalysisApplicationService
 
 
